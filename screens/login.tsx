@@ -1,25 +1,51 @@
 import {
   StyleSheet,
+  TextInput,
   Text,
   View,
   Button
 } from 'react-native';
 
+import {useForm, Controller} from "react-hook-form"
+import CustomFormTextInput from '../custom/customFormTextInput';
+
+type FormData = {
+  email: string;
+  password: string;
+};
+
 function LoginScreen(props): React.JSX.Element {
+
+  const { control, handleSubmit, formState: {errors}} = useForm<FormData>();
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  }
+
   return (
     <View style={styles.container}>
-        <Text>This is Login Page!</Text>
-        <Button 
-          title="Forgot password" 
-          onPress={() => props.navigation.navigate("ForgotPassword")}
-        />
-        <Button 
-          title="Sign Up"
-          onPress={() => props.navigation.navigate("Signup")}
-        />
+      
+      <CustomFormTextInput 
+        name="email" 
+        control={control} 
+        placeholder="Enter Your Email"
+      />
+
+      <CustomFormTextInput 
+        name="password" 
+        control={control} 
+        placeholder="Enter Your Password"
+        props={{
+          secureTextEntry: true,
+          autoCapitalize: "none"
+        }}
+        
+      />
+
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -27,14 +53,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 10,
-    margin: 10,
-    width: 200,
   },
 });
 
