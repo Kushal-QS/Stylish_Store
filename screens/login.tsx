@@ -8,6 +8,7 @@ import {
 
 import {useForm, Controller} from "react-hook-form"
 import CustomFormTextInput from '../custom/customFormTextInput';
+import styles from '../styling/loginStyles';
 
 type FormData = {
   email: string;
@@ -29,31 +30,23 @@ function LoginScreen(props): React.JSX.Element {
         name="email" 
         control={control} 
         placeholder="Enter Your Email"
+        style={styles.input}
       />
 
       <CustomFormTextInput 
         name="password" 
         control={control} 
         placeholder="Enter Your Password"
+        style={styles.input}
         props={{
           secureTextEntry: true,
           autoCapitalize: "none"
         }}
-        
       />
 
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default LoginScreen;
