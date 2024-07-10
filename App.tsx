@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import LoginScreen from "./screens/login";
 import ForgotPassword from "./screens/forgotPassword";
 import SignupScreen from "./screens/signUp";
-import LoginScreen2 from "./screens/loginScreen";
+
 import {
   StyleSheet,
 } from 'react-native';
@@ -24,8 +24,7 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login2" component={LoginScreen2} />
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Signup" component={SignupScreen} />
