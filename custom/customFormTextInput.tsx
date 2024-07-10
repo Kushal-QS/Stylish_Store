@@ -12,7 +12,8 @@ interface CustomFormTextInputProps extends TextInputProps {
 }
 
 const CustomFormTextInput: React.FC<CustomFormTextInputProps> = ({name, control, placeholder, defaultValue='', style, props={}}) => {
-    return (
+    
+  return (
       <Controller 
         name={name}
         control={control}
