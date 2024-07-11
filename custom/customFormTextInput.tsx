@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, TextInput, Text, TextInputProps, StyleSheet, ViewStyle, StyleProp, TextStyle} from 'react-native';
 import {Controller, Control} from 'react-hook-form';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface CustomFormTextInputProps extends TextInputProps {
     name: string;
@@ -14,7 +15,7 @@ interface CustomFormTextInputProps extends TextInputProps {
 const CustomFormTextInput: React.FC<CustomFormTextInputProps> = ({name, control, placeholder, defaultValue='', style, props={}}) => {
     
   return (
-      <Controller 
+      <Controller
         name={name}
         control={control}
         render={({field: { onChange, onBlur, value}})=>(

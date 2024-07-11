@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -11,7 +13,8 @@ import CustomFormTextInput from '../custom/customFormTextInput';
 import { Image, Button} from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-  
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 type FormData = {
   email: string;
   password: string;
@@ -24,6 +27,8 @@ function SignupScreen(props): React.JSX.Element {
     console.log(data);
   }
 
+  const [visible, setVisible] = useState(false);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View  style={styles.container}>
@@ -34,6 +39,7 @@ function SignupScreen(props): React.JSX.Element {
 
           <View style={styles.form}>
             <View style={styles.inputWrapper}>
+              <Icon name="user" size={20} color="#867979" style={styles.icon} />
               <CustomFormTextInput 
                 name="Username or Email" 
                 control={control} 
@@ -43,33 +49,41 @@ function SignupScreen(props): React.JSX.Element {
             </View>
 
             <View style={styles.inputWrapper}>
+              <Icon name="lock" size={20} color="#867979" style={styles.icon} />
               <CustomFormTextInput 
                 name="password" 
                 control={control} 
                 placeholder="Password"
                 style={styles.input}
                 props={{
-                  secureTextEntry: true,
+                  secureTextEntry: !visible,
                   autoCapitalize: "none"
                 }}
               />
+              <TouchableOpacity onPress={() => setVisible(!visible)} style={styles.eyeIconContainer}>
+                <Icon name={visible ? "eye" : "eye-slash"} size={20} color="#867979" style={styles.eyeIcon} />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.inputWrapper}>
+              <Icon name="lock" size={20} color="#867979" style={styles.icon} />
               <CustomFormTextInput 
                 name="confirm_password" 
                 control={control} 
                 placeholder="Confirm Password"
                 style={styles.input}
                 props={{
-                  secureTextEntry: true,
+                  secureTextEntry: !visible,
                   autoCapitalize: "none"
                 }}
               />
+              <TouchableOpacity onPress={() => setVisible(!visible)} style={styles.eyeIconContainer}>
+                <Icon name={visible ? "eye" : "eye-slash"} size={20} color="#867979" style={styles.eyeIcon} />
+              </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.policy} onPress={()=>{console.log("Agreed!")}}>
-              <Text>By clicking the <Text style={styles.terms}>Register</Text> button, you agree to the public offer</Text>
+              <Text style={styles.note}>By clicking the <Text style={styles.terms}>Register</Text> button, you agree to the public offer</Text>
             </TouchableOpacity>
 
             <View style={styles.formCreateAccount}>
@@ -119,16 +133,17 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   header: {
-    width: '60%',
+    width: '90%',
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingHorizontal: 24,
     marginTop: 20,
   },
   welcomeText: {
-    fontSize: 40,
-    fontWeight: '700',
+    fontSize: 35,
+    //fontWeight: '700',
     color: '#000',
+    fontFamily: 'Montserrat-Bold',
   },
   form: {
     paddingHorizontal: 24,
@@ -137,17 +152,30 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   inputWrapper: {
-    marginTop: 30,
-  },
-  input: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#A8A8A9',
     backgroundColor: '#E3E3E3',
     borderRadius: 10,
+    marginTop: 30,
+  },
+  input: {
+    flexGrow: 1,
     height: 50,
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     fontSize: 15,
     fontWeight: '500',
+    fontFamily: "Montserrat-Regular",
+  },
+  icon: {
+    marginLeft: 10,
+  },
+  eyeIconContainer: {
+    padding: 0,
+  },
+  eyeIcon: {
+    marginRight: 10,
   },
   forgot: {
     fontSize: 15,
@@ -156,12 +184,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   policy: {
-    width: '75%',
-    fontSize: 15,
+    width: '80%',
     marginTop: 15,
+    fontFamily: "Montserrat-Regular",
+  },
+  note: {
+    fontSize: 12,
+    fontFamily: "Montserrat-Regular",
   },
   terms: {
-    color: '#F85758'
+    color: '#F85758',
+    fontFamily: "Montserrat-Regular",
   },
   formLogin: {
     marginTop: 50,
@@ -200,6 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 26,
+    fontFamily: 'Montserrat-Medium',
   },
   socialLogin: {
     flexGrow: 1,
@@ -223,6 +257,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   footer: {
-    fontSize: 15,
+    fontSize: 12,
+    fontFamily: "Montserrat-Regular",
   }
 })

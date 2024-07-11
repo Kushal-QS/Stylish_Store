@@ -11,7 +11,8 @@ import CustomFormTextInput from '../custom/customFormTextInput';
 import { Image, Button} from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-  
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 function ForgotPassword(props): React.JSX.Element {
   const { control, handleSubmit, formState: {errors}} = useForm<FormData>();
 
@@ -19,7 +20,7 @@ function ForgotPassword(props): React.JSX.Element {
     console.log(data);
   }
 
-  return (
+  return ( 
     <SafeAreaView style={{flex: 1}}>
       <View  style={styles.container}>
         <KeyboardAwareScrollView>
@@ -29,6 +30,7 @@ function ForgotPassword(props): React.JSX.Element {
 
           <View style={styles.form}>
             <View style={styles.inputWrapper}>
+              <Icon name="envelope" size={20} color="#867979" style={styles.icon} />
               <CustomFormTextInput 
                 name="email" 
                 control={control} 
@@ -64,16 +66,17 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   header: {
-    width: '60%',
+    width: '90%',
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingHorizontal: 24,
     marginTop: 20,
   },
   welcomeText: {
-    fontSize: 40,
-    fontWeight: '700',
+    fontSize: 35,
+    //fontWeight: '700',
     color: '#000',
+    fontFamily: 'Montserrat-Bold',
   },
   form: {
     paddingHorizontal: 24,
@@ -82,17 +85,30 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   inputWrapper: {
-    marginTop: 30,
-  },
-  input: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#A8A8A9',
     backgroundColor: '#E3E3E3',
     borderRadius: 10,
+    marginTop: 30,
+  },
+  input: {
+    flexGrow: 1,
     height: 50,
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     fontSize: 15,
     fontWeight: '500',
+    fontFamily: "Montserrat-Regular",
+  },
+  icon: {
+    marginLeft: 10,
+  },
+  eyeIconContainer: {
+    padding: 0,
+  },
+  eyeIcon: {
+    marginRight: 10,
   },
   forgot: {
     fontSize: 15,
@@ -112,8 +128,9 @@ const styles = StyleSheet.create({
   //forgotpassword
   note: {
     width: '85%',
-    fontSize: 15,
+    fontSize: 12,
     marginTop: 15,
+    fontFamily: "Montserrat-Regular",
   },
   formLogin: {
     marginTop: 50,
@@ -171,6 +188,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 26,
+    fontFamily: "Montserrat-Medium",
   },
   socialLogin: {
     flexGrow: 1,
