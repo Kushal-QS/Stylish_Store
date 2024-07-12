@@ -9,11 +9,11 @@ import {
 
 import {useForm, Controller} from "react-hook-form"
 import CustomFormTextInput from '../custom/customFormTextInput';
-//import styles from '../styling/loginStyles';
 import { Image, Button} from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+//import styles from '../styling/loginStyles';
 
 type FormData = {
   email: string;
@@ -71,7 +71,7 @@ function LoginScreen(props): React.JSX.Element {
             </TouchableOpacity>
 
             <View style={styles.formLogin}>
-                <TouchableOpacity onPress={()=> {}}>
+                <TouchableOpacity onPress={()=>{props.navigation.replace("Main")}}>
                   <View style={styles.loginBtn}>
                     <Text style={styles.loginText}>Login</Text>
                   </View>
@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: 35,
-    //fontWeight: '700',
     color: '#000',
     fontFamily: "Montserrat-Bold",
   },
