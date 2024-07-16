@@ -13,19 +13,23 @@ import{
 import {useForm, Controller} from "react-hook-form"
 
 import Feather from 'react-native-vector-icons/Feather';
-import CustomFormTextInput from './customFormTextInput';
+import CustomSearchInput from './customSearchInput';
 
 interface SearchBarProps {
     customStyles?: StyleProp<ViewStyle>;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({customStyles}) => {
+const SearchBar: React.FC<SearchBarProps> = ({customStyles, searchQuery, setSearchQuery}) => {
     const { control, handleSubmit, formState: {errors}} = useForm<FormData>();
 
     return (
         <View style={[styles.searchBarWrapper, customStyles]}>
             <Feather name="search" size={20} color={'#867979'} style={styles.icon}/>
-            <CustomFormTextInput 
+            <CustomSearchInput 
+                searchVal={searchQuery}
+                onChangeText={setSearchQuery}
                 name="searchBar" 
                 control={control} 
                 placeholder="Search any Product.."
