@@ -53,9 +53,8 @@ const AdvCard: React.FC<AdvCardProps> = ({imgSrc, offer, info1, info2="hurry up"
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width: 335,
+        width: '100%',
         height: 200,
-        marginBottom: 20,
         borderRadius: 10,
         overflow: 'hidden',
     },

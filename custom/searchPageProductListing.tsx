@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {StyleSheet, Text, View, Image, FlatList} from "react-native";
+import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from "react-native";
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -19,11 +19,11 @@ interface RatingProp {
     rate: string,
 }
 
-interface ProductListingProps {
+interface searchPageListingProps {
     searchQuery: string;
 }
 
-const ProductListing: React.FC<ProductListingProps> = ({searchQuery}) => {
+const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery}) => {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -42,7 +42,9 @@ const ProductListing: React.FC<ProductListingProps> = ({searchQuery}) => {
             //console.log(data);
             setProducts(data);
             setFilteredProducts(data);
-        });
+        }).catch((Error) => {
+            console.log(Error)
+        })
     };
 
     useEffect(() => {
@@ -63,7 +65,7 @@ const ProductListing: React.FC<ProductListingProps> = ({searchQuery}) => {
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
+                    <TouchableOpacity style={styles.item}>
                         <Image source={{ uri: item.image }} style={styles.image}/>
                         <View style={styles.info}>
                             <Text style={styles.t1}>{item.category}</Text>
@@ -82,13 +84,13 @@ const ProductListing: React.FC<ProductListingProps> = ({searchQuery}) => {
                             />
                             <Text style={styles.count}>     {item.rating.count}</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
             )}/>
         </View>
     )
 }
 
-export default ProductListing;
+export default SearchPageProductListing;
 
 const styles = StyleSheet.create({
     productsContainer: {
@@ -96,10 +98,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f1f2',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        marginBottom: 150,
+        marginHorizontal: 5,
+        marginTop: 10,
+        marginBottom: 130,
     },
     item: {
-        width: '47%',
+        width: 150,
+        height: 'auto',
         padding: 15,
         alignItems: 'flex-start',
         //justifyContent: 'center',
@@ -109,13 +114,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     image: {
-        width: '100%',
+        width: 120,
         height: 100,
         marginRight: 10,
     },
     info: {
         alignSelf: 'flex-start',
-        
     },
     t1: {
         fontFamily: 'Montserrat-SemiBold',

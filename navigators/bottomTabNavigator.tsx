@@ -9,6 +9,7 @@ import SearchScreen from "../screens/search";
 import SettingsScreen from "../screens/settings";
 
 import Feather from 'react-native-vector-icons/Feather';
+import HomeStackNavigator from "./homeStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,7 @@ const TabNavigator = () => {
             }}
         >
 
-            <Tab.Screen name="Home" component={HomeScreen} options={{
+            <Tab.Screen name="Home_Stack" component={HomeStackNavigator} options={{
                 tabBarIcon: ({color, size}) =>(
                     <Feather name="home" size={size} color={color} />
                 )

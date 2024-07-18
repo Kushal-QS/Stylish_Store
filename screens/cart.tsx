@@ -1,25 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import CartProductListing from '../custom/cartListing';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../custom/header';
+//import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
 
 const CartScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Cart Screen</Text>
-    </View>
+    <SafeAreaView>
+      <Header customStyles={styles.customHeader}/>
+      <View style={styles.cartContainer}>
+        {/* <Text style={styles.text}>Your Cart</Text> */}
+        <CartProductListing />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+  customHeader: {
+    marginVertical: 5,
   },
+  cartContainer: {
+    flexDirection: 'column',
+    backgroundColor: '#f0f1f2',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginHorizontal: 5,
+    marginTop: 10,
+    marginBottom: 120,
+},
   text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
+    fontFamily: 'Montserrat-Bold',
+    color: '#000000',
+    fontSize: 32,
+    textAlign: 'center'
   },
 });
 
