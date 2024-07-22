@@ -35,7 +35,7 @@ const HomeScreen: React.FC = () => {
           button='Explore'
           customStyle={styles.customDeals1}
         />
-        
+
         <ProductListing searchQuery={"Men's"} />
         
         <View style={[styles.ads, styles.debug]}>

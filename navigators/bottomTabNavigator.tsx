@@ -24,11 +24,14 @@ const TabNavigator = () => {
             }}
         >
 
-            <Tab.Screen name="Home_Stack" component={HomeStackNavigator} options={{
-                tabBarIcon: ({color, size}) =>(
-                    <Feather name="home" size={size} color={color} />
-                )
-            }}/>
+            <Tab.Screen name="Home_Stack" component={HomeStackNavigator} 
+                options={{
+                    tabBarIcon: ({color, size}) =>(
+                        <Feather name="home" size={size} color={color} />
+                    ),
+                    tabBarLabel: "Home"
+                }}
+            />
             <Tab.Screen name="Wishlist" component={WishlistScreen} options={{
                 tabBarIcon: ({color, size}) => (
                     <Feather name="heart" size={size} color={color} />

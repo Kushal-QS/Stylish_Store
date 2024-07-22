@@ -1,8 +1,7 @@
 //cart listing
 import React, { useEffect, useState } from 'react';
 
-import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from "react-native";
-import Stars from 'react-native-stars';
+import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity, ActivityIndicator} from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import ProductDetails from '../screens/productDetails';
@@ -42,7 +41,7 @@ interface RatingProp {
 }
 
 const CartProductListing: React.FC = ({}) => {
-
+    const [isLoading, setIsLoading] = useState(true);
     const [carts, setCarts] = useState<Cart[]>([]);
     const [cartProducts, setCartProducts] = useState<Product[]>([]);
     const [cartProductsDetailed, setCartProductsDetailed] = useState<ProductDetailed[]>([])
@@ -53,9 +52,11 @@ const CartProductListing: React.FC = ({}) => {
     }, []);
 
     useEffect(() => {
-        fetchProductDetails();
-        console.log("Products with details fetched");
-        //console.log(cartProductsDetailed[0].title);
+        if(cartProducts.length > 0){
+            fetchProductDetails();
+            console.log("Products with details fetched");
+            //console.log(cartProductsDetailed[0].title);
+        }
     }, [cartProducts]);
 
     const getCartProducts =() => {
@@ -87,6 +88,7 @@ const CartProductListing: React.FC = ({}) => {
         }
 
         setCartProductsDetailed(productsWithDetailsArray);
+        setIsLoading(false);
     };
 
     const increaseQuantity = (productId: string) => {
@@ -137,13 +139,21 @@ const CartProductListing: React.FC = ({}) => {
     );
 
     return(
-            <FlatList 
+        <>
+        {
+            isLoading ? (
+                <ActivityIndicator color="#ff6633" size="large" />
+            ) : (
+                <FlatList 
                 numColumns={1}
                 showsVerticalScrollIndicator = {false}
                 data={cartProductsDetailed}
                 renderItem={renderProduct}
                 keyExtractor={(item) => item.id.toString()}
-            />
+                />
+            )
+        }  
+        </>
     )
 }
 
@@ -152,15 +162,19 @@ export default CartProductListing;
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         width: 320,
-        height: 'auto',
         padding: 15,
         alignItems: 'flex-start',
         backgroundColor: '#fff',
         borderRadius: 10,
         marginVertical: 5,
         marginHorizontal: 10,
+        // Shadow for Android
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 2,
     },
     image: {
         width: 110,

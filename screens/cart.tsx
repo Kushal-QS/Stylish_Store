@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import CartProductListing from '../custom/cartListing';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,7 +10,6 @@ const CartScreen = () => {
     <SafeAreaView>
       <Header customStyles={styles.customHeader}/>
       <View style={styles.cartContainer}>
-        {/* <Text style={styles.text}>Your Cart</Text> */}
         <CartProductListing />
       </View>
     </SafeAreaView>
@@ -22,13 +21,11 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   cartContainer: {
-    flexDirection: 'column',
-    backgroundColor: '#f0f1f2',
+    backgroundColor: '#f0f0f0',
     alignItems: 'center',
-    justifyContent: 'flex-start',
     marginHorizontal: 5,
     marginTop: 10,
-    marginBottom: 120,
+    marginBottom: 0,
 },
   text: {
     fontFamily: 'Montserrat-Bold',

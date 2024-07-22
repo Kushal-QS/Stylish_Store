@@ -1,26 +1,48 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
+import Header from '../custom/header';
 
-const WishlistScreen = () => {
+const SettingsScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Wishlist Screen</Text>
-    </View>
+    <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
+      <Header customStyles={styles.customHeader}/>
+      <View style={styles.container}>
+        
+        <View style={styles.vectorImg}>
+          <Image 
+            source={require('../assets/images/wishlist.jpg')}
+            style={styles.pic}
+          />
+        </View>
+        <Text style={styles.note}>Under Maintenance</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
+  customHeader: {
+    marginVertical: 5,
   },
+  vectorImg: {
+
+  },
+  pic: {
+    height: 400,
+    width: 400,
+  },
+  note: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 20,
+    color: 'red',
+    marginTop: 20,
+  }
 });
 
-export default WishlistScreen;
+export default SettingsScreen;

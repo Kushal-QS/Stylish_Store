@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity, ActivityIndicator} from "react-native";
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -24,7 +24,7 @@ interface searchPageListingProps {
 }
 
 const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery}) => {
-
+    const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
@@ -42,6 +42,7 @@ const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery
             //console.log(data);
             setProducts(data);
             setFilteredProducts(data);
+            setIsLoading(false);
         }).catch((Error) => {
             console.log(Error)
         })
@@ -59,33 +60,39 @@ const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery
 
     return(
         <View style={styles.productsContainer}>
-            <FlatList 
-                showsVerticalScrollIndicator = {false}
-                data={filteredProducts}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={2}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.item}>
-                        <Image source={{ uri: item.image }} style={styles.image}/>
-                        <View style={styles.info}>
-                            <Text style={styles.t1}>{item.category}</Text>
-                            <Text style={styles.t2}>{item.title}</Text>
-                            <Text style={styles.price}>₹{item.price}</Text>
-                        </View>
-                        <View style={styles.rating}>
-                            <Stars
-                                default={parseFloat(item.rating.rate)}
-                                count={5}
-                                half={true}
-                                starSize={150}
-                                fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
-                                emptyStar={<Icon name={'star-outline'} style={[styles.myStarStyle, styles.myEmptyStarStyle]} />}
-                                halfStar={<Icon name={'star-half'} style={[styles.myStarStyle]} />}
-                            />
-                            <Text style={styles.count}>     {item.rating.count}</Text>
-                        </View>
-                    </TouchableOpacity>
-            )}/>
+            {
+                isLoading ? (
+                        <ActivityIndicator color="#ff6633" size="large" />
+                ) : (
+                    <FlatList 
+                    showsVerticalScrollIndicator = {false}
+                    data={filteredProducts}
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={2}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity style={styles.item}>
+                            <Image source={{ uri: item.image }} style={styles.image}/>
+                            <View style={styles.info}>
+                                <Text style={styles.t1}>{item.category}</Text>
+                                <Text style={styles.t2}>{item.title}</Text>
+                                <Text style={styles.price}>₹{item.price}</Text>
+                            </View>
+                            <View style={styles.rating}>
+                                <Stars
+                                    default={parseFloat(item.rating.rate)}
+                                    count={5}
+                                    half={true}
+                                    starSize={150}
+                                    fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
+                                    emptyStar={<Icon name={'star-outline'} style={[styles.myStarStyle, styles.myEmptyStarStyle]} />}
+                                    halfStar={<Icon name={'star-half'} style={[styles.myStarStyle]} />}
+                                />
+                                <Text style={styles.count}>     {item.rating.count}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}/>
+                )
+            }
         </View>
     )
 }
@@ -112,6 +119,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
         marginHorizontal: 5,
+        // Shadow for Android
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     image: {
         width: 120,

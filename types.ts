@@ -16,4 +16,5 @@ interface RatingProp {
 export type HomeStackParamList = {
     Home: undefined;
     ProductDetails: {product: Product};
+    Profile: undefined;
 }

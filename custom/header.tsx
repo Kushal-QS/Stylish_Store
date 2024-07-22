@@ -8,15 +8,24 @@ import{
     StyleSheet,
     StyleProp,
     ViewStyle,
+    TouchableOpacity,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
+import { HomeStackParamList } from '../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<HomeStackParamList, 'Profile'>;
 
 interface HeaderProps {
     customStyles?: StyleProp<ViewStyle>;
 }
 
 const Header: React.FC<HeaderProps> = ({customStyles}) => {
+
+    const navigation = useNavigation<NavigationProp>();
+
     return (
         <View style={[styles.headerContainer, customStyles]}>
             <View style={styles.menuIconContainer}>
@@ -34,12 +43,12 @@ const Header: React.FC<HeaderProps> = ({customStyles}) => {
                 />
             </View>
 
-            <View style={styles.profileContainer}>
+            <TouchableOpacity style={styles.profileContainer} onPress={() => navigation.navigate('Profile')} >
                 <Image 
                     source={require('../assets/images/profileLogo.png')}
-                    style={styles.textLogo}
+                    style={styles.pic}
                 />
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -67,6 +76,10 @@ const styles = StyleSheet.create({
     },
     profileContainer: {
 
+    },
+    pic: {
+        height: 40,
+        width: 40,
     }
 })
 
