@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import{
     SafeAreaView,
@@ -10,29 +10,29 @@ import{
     ViewStyle,
 } from 'react-native';
 
-import {useForm, Controller} from "react-hook-form"
-
 import Feather from 'react-native-vector-icons/Feather';
-import CustomSearchInput from './customSearchInput';
+import productSearchStore from '../src/store/productSearch';
 
 interface SearchBarProps {
     customStyles?: StyleProp<ViewStyle>;
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
+    setGlobalSearchQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({customStyles, searchQuery, setSearchQuery}) => {
-    const { control, handleSubmit, formState: {errors}} = useForm<FormData>();
+const SearchBar: React.FC<SearchBarProps> = ({customStyles, setGlobalSearchQuery}) => {
+    const [localSearchValue, setLocalSearchValue] = useState("")
+
+    const handleChangeText = (text: string) => {
+        setLocalSearchValue(text);
+        setGlobalSearchQuery(text);
+    }
 
     return (
         <View style={[styles.searchBarWrapper, customStyles]}>
             <Feather name="search" size={20} color={'#867979'} style={styles.icon}/>
-            <CustomSearchInput 
-                searchVal={searchQuery}
-                onChangeText={setSearchQuery}
-                name="searchBar" 
-                control={control} 
-                placeholder="Search any Product.."
+            <TextInput 
+                value={localSearchValue}
+                onChangeText={handleChangeText} 
+                placeholder="Search..."
                 style={styles.input}
             />
             <Feather name="mic" size={20} color={'#867979'} style={styles.icon}/>

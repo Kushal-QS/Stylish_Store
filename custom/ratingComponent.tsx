@@ -1,23 +1,31 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather'; // Assuming you're using react-native-vector-icons or a similar library
+import Icon from 'react-native-vector-icons/FontAwesome'; // Assuming you're using react-native-vector-icons or a similar library
 
 interface RatingProps {
   rating: number; // Type the rating prop as a number
 }
 
 const Rating: React.FC<RatingProps> = ({ rating }) => {
-  const stars = Array(5).fill(0).map((_, index) => {
-    const roundedRating = Math.round(rating * 2) / 2; // Round to nearest half star
-    const filled = index < roundedRating;
-    const halfFilled = index === Math.floor(roundedRating);
+  // Ensure rating is within the 0 to 5 range
+  const normalizedRating = Math.min(Math.max(rating, 0), 5);
+
+  // Calculate the number of full, half, and empty stars
+  const stars = Array.from({ length: 5 }, (_, index) => {
+    const roundedRating = Math.round(normalizedRating * 2) / 2;
+    const filled = index < Math.floor(roundedRating);
+    const halfFilled = index === Math.floor(roundedRating) && roundedRating % 1 !== 0;
 
     return (
       <Icon
         key={index}
-        name={filled ? 'star' : halfFilled ? 'star-half' : 'star-outline'}
-        size={20}
-        style={[styles.star, filled && styles.filledStar, halfFilled && styles.halfFilledStar]}
+        name={filled ? 'star' : halfFilled ? 'star-half-full' : 'star-o'} // Use 'star' for empty stars to avoid confusion
+        size={12}
+        style={[
+          styles.star,
+          filled && styles.filledStar,
+          halfFilled && styles.halfFilledStar,
+        ]}
       />
     );
   });
@@ -36,10 +44,7 @@ const styles = StyleSheet.create({
     color: 'gold', // Customize filled star color
   },
   halfFilledStar: {
-    color: 'orange', // Customize half-filled star color
-  },
-  myEmptyStarStyle: {
-    // Override empty star styles if needed
+    color: 'gold', // Customize half-filled star color
   },
 });
 

@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Header from '../custom/header';
 import SearchBar from '../custom/searchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import ProductListing from '../custom/productListing';
 import SearchPageProductListing from '../custom/searchPageProductListing';
+import productSearchStore from '../src/store/productSearch';
 
-const HomeScreen: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+const SearchScreen: React.FC = () => {
+  useEffect(() => {
+    productSearchStore.fetchProducts();
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <Header customStyles={styles.customHeader}/>
       <SearchBar 
         customStyles={styles.customSearchBar}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        setGlobalSearchQuery={productSearchStore.setSearchQuery.bind(productSearchStore)}  
       />
       
-      <SearchPageProductListing searchQuery={searchQuery}/>
+      <SearchPageProductListing />
       
     </SafeAreaView>
   );
@@ -37,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default SearchScreen;

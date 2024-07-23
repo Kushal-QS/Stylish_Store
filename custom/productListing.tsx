@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '../types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Rating from './ratingComponent';
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, 'ProductDetails'>;
 
@@ -84,18 +85,7 @@ const ProductListing: React.FC<ProductListingProps> = ({searchQuery}) => {
                                 <Text style={styles.t2}>{item.title}</Text>
                                 <Text style={styles.price}>₹{item.price}</Text>
                             </View>
-                            <View style={styles.rating}>
-                                <Stars
-                                    default={parseFloat(item.rating.rate)}
-                                    count={5}
-                                    half={true}
-                                    starSize={150}
-                                    fullStar={<Icon name={'star'} style={[styles.myStarStyle]} />}
-                                    emptyStar={<Icon name={'star-outline'} style={[styles.myStarStyle, styles.myEmptyStarStyle]} />}
-                                    halfStar={<Icon name={'star-half'} style={[styles.myStarStyle]} />}
-                                />
-                                <Text style={styles.count}>     {item.rating.count}</Text>
-                            </View>
+                            <Rating rating={parseFloat(item.rating.rate)}/>
                         </TouchableOpacity>
                     )}/> 
                 )

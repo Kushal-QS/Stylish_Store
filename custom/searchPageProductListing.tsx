@@ -3,70 +3,21 @@ import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity, ActivityIndicator} from "react-native";
 import Stars from 'react-native-stars';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import productSearchStore from '../src/store/productSearch';
+import { observer } from 'mobx-react-lite';
+import Rating from './ratingComponent';
 
-interface Product {
-    category: string,
-    description: string,
-    id: string,
-    image: string,
-    price: string,
-    rating: RatingProp
-    title: string,
-}
-
-interface RatingProp {
-    count: string,
-    rate: string,
-}
-
-interface searchPageListingProps {
-    searchQuery: string;
-}
-
-const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery}) => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [products, setProducts] = useState<Product[]>([]);
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
-    useEffect(()=>{
-        getProducts();
-    }, []);
-
-    const getProducts =() => {
-        const URL = "https://fakestoreapi.com/products";
-
-        fetch(URL)
-        .then((res) =>{
-            return res.json();
-        }).then((data)=>{
-            //console.log(data);
-            setProducts(data);
-            setFilteredProducts(data);
-            setIsLoading(false);
-        }).catch((Error) => {
-            console.log(Error)
-        })
-    };
-
-    useEffect(() => {
-        if(searchQuery.trim() === ''){
-            setFilteredProducts(products);
-        }else{
-            console.log("Search Query: ", searchQuery);
-            const filtered = products.filter(product => product.category.toLowerCase().includes(searchQuery.trim().toLowerCase()));
-            setFilteredProducts(filtered);
-        }
-    }, [searchQuery, products]);
+const SearchPageProductListing: React.FC = observer(() => {
 
     return(
         <View style={styles.productsContainer}>
             {
-                isLoading ? (
-                        <ActivityIndicator color="#ff6633" size="large" />
+                productSearchStore.isLoading ? (
+                        <ActivityIndicator color="#ff6633" size="large" /> 
                 ) : (
                     <FlatList 
                     showsVerticalScrollIndicator = {false}
-                    data={filteredProducts}
+                    data={productSearchStore.filteredProducts.slice()}
                     keyExtractor={(item) => item.id.toString()}
                     numColumns={2}
                     renderItem={({ item }) => (
@@ -77,7 +28,7 @@ const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery
                                 <Text style={styles.t2}>{item.title}</Text>
                                 <Text style={styles.price}>₹{item.price}</Text>
                             </View>
-                            <View style={styles.rating}>
+                            { /* <View style={styles.rating}>
                                 <Stars
                                     default={parseFloat(item.rating.rate)}
                                     count={5}
@@ -88,14 +39,15 @@ const SearchPageProductListing: React.FC<searchPageListingProps> = ({searchQuery
                                     halfStar={<Icon name={'star-half'} style={[styles.myStarStyle]} />}
                                 />
                                 <Text style={styles.count}>     {item.rating.count}</Text>
-                            </View>
+                            </View> */}
+                            <Rating rating={parseFloat(item.rating.rate)} />
                         </TouchableOpacity>
                     )}/>
                 )
             }
         </View>
     )
-}
+})
 
 export default SearchPageProductListing;
 
