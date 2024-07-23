@@ -6,113 +6,29 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import ProductDetails from '../screens/productDetails';
 
+import { RootState, AppDispatch } from '../src/store/store';
+import { fetchCartProducts, fetchProductDetails, increaseQuantity, decreaseQuantity, deleteProduct} from '../src/store/cartReducer'
+import { useDispatch, useSelector } from 'react-redux';
+
 //import { HomeStackParamList } from '../types';
 //import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 //type NavigationProp = NativeStackNavigationProp<HomeStackParamList, 'ProductDetails'>;
 
-interface Product {
-    productId: string;
-    quantity: number;
-}
-  
-interface Cart {
-    id: number;
-    userId: number;
-    date: string;
-    products: Product[];
-    __v: number;
-}
-
-interface ProductDetailed {
-    category: string;
-    description: string;
-    id: string;
-    image: string;
-    price: string;
-    rating: RatingProp;
-    title: string;
-    quantity: number;
-}
-
-interface RatingProp {
-    count: string;
-    rate: string;
-}
-
 const CartProductListing: React.FC = ({}) => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [carts, setCarts] = useState<Cart[]>([]);
-    const [cartProducts, setCartProducts] = useState<Product[]>([]);
-    const [cartProductsDetailed, setCartProductsDetailed] = useState<ProductDetailed[]>([])
-    //const navigation = useNavigation<NavigationProp>();
+    const dispatch = useDispatch<AppDispatch>();
+    const { isLoading, products, productsDetailed } = useSelector((state: RootState) => state.cart);
 
     useEffect(()=>{
-        getCartProducts();
+        dispatch(fetchCartProducts());
     }, []);
 
     useEffect(() => {
-        if(cartProducts.length > 0){
-            fetchProductDetails();
+        if(products.length > 0){
+            dispatch(fetchProductDetails(products));
             console.log("Products with details fetched");
-            //console.log(cartProductsDetailed[0].title);
         }
-    }, [cartProducts]);
-
-    const getCartProducts =() => {
-        const URL = "https://fakestoreapi.com/carts?userId=1";
-
-        fetch(URL)
-        .then((res) =>{
-            return res.json();
-        }).then((data)=>{
-            setCarts(data);
-            setCartProducts(data[0].products);
-            //console.log("cartProducts are...");
-            //console.log(cartProducts);
-        }).catch((Error) => {
-            console.log(Error)
-        })
-    };
-
-    const fetchProductDetails = async () => {
-        const productsWithDetailsArray: ProductDetailed[] = [];
-        for(const cartProduct of cartProducts){
-            try{
-                const response = await fetch(`https://fakestoreapi.com/products/${cartProduct.productId}`);
-                const productData = await response.json();
-                productsWithDetailsArray.push({ ...productData, quantity: cartProduct.quantity });
-            }catch(error){
-                console.log(error);
-            }
-        }
-
-        setCartProductsDetailed(productsWithDetailsArray);
-        setIsLoading(false);
-    };
-
-    const increaseQuantity = (productId: string) => {
-        setCartProductsDetailed((prevProducts) =>
-          prevProducts.map((product) =>
-            product.id === productId ? { ...product, quantity: product.quantity + 1 } : product
-          ) //here product means ProductDetailed object
-        );
-    };
-      
-    const decreaseQuantity = (productId: string) => {
-        setCartProductsDetailed((prevProducts) =>
-          prevProducts.map((product) =>
-            product.id === productId && product.quantity > 1
-              ? { ...product, quantity: product.quantity - 1 } : product
-          )
-        );
-    };
-
-    const deleteProduct = (productId: string) => {
-        setCartProductsDetailed((prevProducts) =>
-            prevProducts.filter((product) => product.id !== productId)
-        );
-    };
+    }, [products]);
 
     const renderProduct = ({ item }: {item: ProductDetailed}) => (
         <TouchableOpacity style={styles.item}>
@@ -123,16 +39,16 @@ const CartProductListing: React.FC = ({}) => {
                 <Text style={styles.price}>₹{item.price}</Text>
                 <Text style={styles.quantity}>Quantity : {item.quantity}</Text>
                 <View style={styles.quantityButtons}>
-                    <TouchableOpacity onPress={() => decreaseQuantity(item.id)}>
+                    <TouchableOpacity onPress={() => dispatch(decreaseQuantity(item.id))}>
                         <Icon name="minus" size={24} color="#000" />
                     </TouchableOpacity>
                     
-                    <TouchableOpacity onPress={() => increaseQuantity(item.id)}>
+                    <TouchableOpacity onPress={() => dispatch(increaseQuantity(item.id))}>
                         <Icon name="plus" size={24} color="#000" />
                     </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity style={styles.deleteIcon} onPress={() => deleteProduct(item.id)}>
+            <TouchableOpacity style={styles.deleteIcon} onPress={() => dispatch(deleteProduct(item.id))}>
                 <Icon name="delete-outline" size={24} color="#ff6633" />
             </TouchableOpacity>
         </TouchableOpacity>
@@ -147,7 +63,7 @@ const CartProductListing: React.FC = ({}) => {
                 <FlatList 
                 numColumns={1}
                 showsVerticalScrollIndicator = {false}
-                data={cartProductsDetailed}
+                data={productsDetailed}
                 renderItem={renderProduct}
                 keyExtractor={(item) => item.id.toString()}
                 />
